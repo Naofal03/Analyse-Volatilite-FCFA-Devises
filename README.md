@@ -47,5 +47,18 @@ install.packages(c("rugarch", "ggplot2", "dplyr", "readr", "fGarch", "FinTS","ts
 ## Comment Exécuter
 1. Clonez le dépôt.
 2. Exécutez le fichier xof_analyse.rmd dans RStudio pour générer les résultats.
+
+## Structure du Dépôt
+
+Ce dépôt est organisé comme suit :
+
+- **`datas/`** : Ce dossier contient les données utilisées pour l'analyse. Chaque fichier correspond à une paire de devises impliquant le FCFA (par exemple, `EUR_XOF.csv`, `USD_XOF.csv`). Les données sont utilisées pour estimer la volatilité des différentes paires de devises.
+
+- **`xof_analyse.Rmd`** : Ce fichier R Markdown contient l'analyse de la volatilité des paires de devises FCFA, avec l'application de modèles GARCH pour estimer la volatilité et identifier les paires les plus volatiles et les plus stables.
+
+- **`xof_analyse.pdf`** : Ce fichier PDF est généré à partir du fichier **`xof_analyse.Rmd`**.
+
+- **`README.md`** : Ce fichier contient une description du projet, des objectifs, de la méthodologie et de la structure du dépôt.
+
 ## Auteurs
 - Naofal AKANHO
