@@ -28,7 +28,10 @@ Les résultats devraient permettre de déterminer les paires de devises les plus
   - rugarch
   - ggplot2
   - dplyr
-
+  - fGarch
+  - FinTS
+  - tseries
+  - readr
 ## Installation
 
 Clonez ce dépôt et installez les dépendances en exécutant le code suivant :
@@ -38,7 +41,7 @@ git@github.com:Naofal03/Analyse-Volatilite-FCFA-Devises.git
 ```
 
 ```R
-install.packages(c("rugarch", "ggplot2", "dplyr", "readr", "car", "plm","gplots","corrplot","lmtest"))
+install.packages(c("rugarch", "ggplot2", "dplyr", "readr", "fGarch", "FinTS","tseries"))
 ```
 
 ## Comment Exécuter
