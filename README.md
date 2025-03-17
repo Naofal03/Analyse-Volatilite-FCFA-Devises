@@ -43,6 +43,6 @@ install.packages(c("rugarch", "ggplot2", "dplyr", "readr", "car", "plm","gplots"
 
 ## Comment Exécuter
 1. Clonez le dépôt.
-2. Exécutez le fichier sub_saharan_africa_esperance.rmd dans RStudio pour générer les résultats.
+2. Exécutez le fichier xof_analyse.rmd dans RStudio pour générer les résultats.
 ## Auteurs
 - Naofal AKANHO
