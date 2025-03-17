@@ -1,0 +1,1737 @@
+---
+output: 
+  pdf_document:
+    latex_engine: xelatex
+fontsize: 12pt
+geometry: margin=2cm
+lang: fr
+header-includes:
+  - \usepackage[T1]{fontenc}
+  - \usepackage[utf8]{inputenc}
+  - \usepackage{amsmath}
+  - \usepackage{amsfonts} 
+  - \usepackage{listings}
+  - \usepackage{color}
+  - \usepackage{graphicx}
+  - \usepackage{tocloft}     # Pour personnaliser la table des matières
+  - \usepackage{hyperref}    # Liens cliquables
+  - \usepackage{eurosym}
+  - \usepackage{mathtools}
+  - \usepackage{titlesec}
+  - \usepackage{enumitem}
+  - \usepackage{float}
+  - \usepackage{fancyhdr}
+  - \usepackage{tikz}
+  - \usepackage{babel}
+  - \renewcommand{\cfttoctitlefont}{\Large\bfseries}  # Style du titre de la ToC
+  - \renewcommand{\cftsecfont}{\bfseries}             # Style des sections
+  - \renewcommand{\cftsubsecfont}{\itshape}           # Style des sous-sections
+  - \setlength{\cftbeforetoctitleskip}{1cm}            # Espacement avant la ToC
+  - \setlength{\cftaftertoctitleskip}{0.5cm}           # Espacement après la ToC
+---
+
+```{=tex}
+\begin{titlepage}
+    \centering
+    \begin{minipage}[t]{0.25\textwidth}
+        \includegraphics[width=\textwidth]{images/unstim.jpg}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.25\textwidth}
+        \includegraphics[width=\textwidth]{images/gmm.jpg}
+    \end{minipage}
+    \begin{center}
+        \textbf{REPUBLIQUE DU BENIN}\\
+        \vspace{0.3cm}
+        \textbf{@@@@@@@@}\\
+        \textbf{MINISTERE DE L’ENSEIGNEMENT SUPERIEUR ET DE LA FORMATION PROFESSIONNELLE(MESRS)}\\
+        \vspace{0.3cm}
+        \textbf{@@@@@@@@}\\
+        \textbf{UNIVERSITE NATIONALE DES SCIENCES, TECHNOLOGIES, INGENIERIE ET MATHEMATIQUES (UNSTIM ABOMEY)}\\
+        \vspace{0.3cm}
+        \textbf{@@@@@@@@}\\
+        \textbf{ECOLE NATIONALE SUPERIEURE DE GENIE MATHEMATIQUE ET MODELISATION (ENSGMM)}\\
+    \end{center}
+    \begin{center}
+        \colorbox{black}{
+            \parbox{\textwidth}{
+                \color{white}\centering\fontsize{24pt}{28pt}\selectfont
+                Analyse de la Volatilité de certaines Paires de Devises avec le FCFA
+        }}
+    \end{center}
+    \vspace{0.5cm}
+    \begin{minipage}[t]{0.45\textwidth}
+        {\Large\textbf{\underline{Réalisé par}:}\par}
+        \vspace{0.25cm}
+        \Large{AKANHO Naofal}\\
+        \par
+    \end{minipage}%
+    \begin{minipage}[t]{0.45\textwidth}
+        {\Large\textbf{\underline{Sous la supervision de} :}\par}
+        \vspace{0.25cm}
+        \Large{Dr. (MA) Nicodème ATCHADE}
+    \end{minipage}
+    \vspace{0.5cm}
+    {\Large\textbf{\underline{Etudiant en}:}}
+    \Large{3ème année du cycle d'ingénieur en Génie Mathématique et modélisation}\par
+    \vspace{0.5cm}
+    {\Large\textbf{\underline{Année académique} :}}
+    \Large{2024-2025}\par
+\end{titlepage}
+\newpage
+```
+# Introduction
+
+L'économie mondiale est marquée par des fluctuations constantes des taux de change, phénomène influencé par une multitude de facteurs économiques, politiques et sociaux. Ces variations peuvent avoir un impact significatif, non seulement sur les marchés financiers internationaux, mais aussi sur les individus et entreprises, particulièrement dans les pays en développement qui utilisent des monnaies moins liquides et plus sensibles aux chocs extérieurs. En Afrique de l'Ouest et en Afrique Centrale, le Franc CFA (FCFA) est la monnaie commune, utilisée par une grande partie de la population, tant pour les échanges locaux que pour les transactions internationales. Cependant, l'une des principales préoccupations des utilisateurs du FCFA reste la volatilité des taux de change par rapport aux devises mondiales, telles que l'Euro (EUR), le Dollar Américain (USD), ou encore le Yen Japonais (JPY). La volatilité des taux de change reflète les risques associés aux fluctuations des valeurs des monnaies, influençant ainsi les décisions de conversion et d'investissement. De plus, les acteurs économiques, qu'ils soient entreprises ou particuliers, sont constamment à la recherche de moyens pour minimiser l'impact de ces fluctuations. Ce projet vise à analyser la volatilité des paires de devises impliquant le FCFA comme devise de base, en se concentrant sur les 9 grandes monnaies mondiales. L'objectif est de déterminer quelles paires de devises avec le FCFA présentent la plus grande volatilité et lesquelles sont les plus stables. Cette analyse pourrait s'avérer particulièrement utile pour les utilisateurs du FCFA, leur permettant de prendre des décisions éclairées lorsqu'ils convertissent leur monnaie. En identifiant les devises les plus volatiles, nous pourrions proposer des stratégies adaptées pour mieux gérer les risques associés aux fluctuations des taux de change. L'originalité de cette étude réside dans l'approche adoptée : alors que la volatilité des grandes paires de devises comme l'EUR/USD ou le USD/JPY a fait l'objet de nombreuses études, l'analyse des paires impliquant le FCFA reste peu explorée. En apportant une perspective nouvelle et concrète sur la volatilité des devises africaines, ce projet a pour ambition de fournir des informations précieuses aux particuliers et entreprises désireux de mieux comprendre et gérer les risques liés à la conversion du FCFA.
+
+## Matériels et Méthodes :
+
+1.  **Sélection des Devises** :
+
+Dans cette étude, nous avons choisi 9 des paires de devises les plus utilisées au niveau mondial pour les transactions internationales et les réserves de change.
+
+Elles comprennent :
+
+• USD/XOF (Dollar Américain / FCFA)
+
+• EUR/XOF (Euro / FCFA)
+
+• GBP/XOF (Livre Sterling / FCFA)
+
+• JPY/XOF (Yen Japonais / FCFA)
+
+• CHF/XOF (Franc Suisse / FCFA)
+
+• AUD/XOF (Dollar Australien / FCFA)
+
+• CAD/XOF (Dollar Canadien / FCFA)
+
+• CNY/XOF (Yuan Chinois / FCFA)
+
+• HKD/XOF (Dollar de Hong Kong / FCFA)
+
+2.  **Source de Données** :
+
+Pour la collecte des données financières nécessaires à l'analyse des taux de change impliquant le FCFA (XOF) comme devise secondaire, nous avons utilisé l'API Alpha Vantage, une source fiable et largement utilisée pour les informations financières en temps réel. Les données récupérées à partir de l'API Alpha Vantage ont été enregistrées dans des fichiers CSV distincts, chaque fichier correspondant à une paire de devises spécifique. Cela a permis une gestion structurée et un accès facile à chaque série temporelle pour les analyses ultérieures.
+
+Pour chaque paire de devises, les informations collectées incluent :
+
+• Date : La date à laquelle les données ont été collectées.
+
+• Open: Le taux de change au début de la journée.
+
+• High: Le taux de change le plus élevé observé durant la journée.
+
+• Low: Le taux de change le plus bas observé durant la journée.
+
+• Close: Le taux de change à la clôture de la journée.
+
+Pour cette étude, des données journalières ont été collectées pour une période allant de 2014 à debut 2025.
+
+### Importation des données
+
+```{r}
+library(readr)
+usd_xof <- read_csv("datas/USD_XOF.csv",show_col_types = FALSE)
+aud_xof <- read_csv("datas/AUD_XOF.csv",show_col_types = FALSE)
+cad_xof <- read_csv("datas/CAD_XOF.csv",show_col_types = FALSE)
+chf_xof <- read_csv("datas/CHF_XOF.csv",show_col_types = FALSE)
+cny_xof <- read_csv("datas/CNY_XOF.csv",show_col_types = FALSE)
+eur_xof <- read_csv("datas/EUR_XOF.csv",show_col_types = FALSE)
+gbp_xof <- read_csv("datas/GBP_XOF.csv",show_col_types = FALSE)
+hkd_xof <- read_csv("datas/HKD_XOF.csv",show_col_types = FALSE)
+jpy_xof <- read_csv("datas/JPY_XOF.csv",show_col_types = FALSE)
+
+```
+
+# Analyse
+
+## Paire de devise USD/XOF
+
+```{r}
+summary(usd_xof$Close)
+
+```
+
+#### Constat :
+
+La plus petite valeur de la devise est de 520 qui a été atteint le 26 janvier 2018 en et la plus grande valeur est 683 obtenu le 27 septembre 2022.
+
+```{r}
+cat("Nombre de valeurs manquantes :", sum(is.na(usd_xof)), "\n")
+
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = usd_xof, aes(x = Date, y = Close)) +
+  geom_line(color = "blue", size = 1) + # Ligne bleue pour les prix
+  labs(title = "Évolution des prix de clôture (USD/XOF)",
+       x = "Date",
+       y = "Prix de clôture (XOF)") +
+  theme_minimal()
+
+```
+
+```{r}
+acf(usd_xof$Close, main = "ACF du prix de cloture de USD/XOF")
+```
+
+Constat : On remarque que la série n'est pas stationnaire, il y a autocorrelation entre les termes. On doit stationnariser la série alors. Pour célà on doit calculer les rendements.
+
+```{r}
+library(dplyr)
+usd_xof <- usd_xof %>%
+  mutate(Returns = log(Close / lag(Close)))  # Calcul des rendements
+
+```
+
+```{r}
+plot(
+x = usd_xof$Date, # Dates sur l'axe des x
+y = usd_xof$Returns, # Rendements sur l'axe des y
+type = "l", # Type de graphique : ligne
+main = "Rendements continus", # Titre du graphique
+xlab = "Temps", # Légende de l'axe x
+ylab = "Rendements" # Légende de l'axe y
+)
+```
+
+#### Constat :
+
+Les rendements semblent osciller autour de zéro, ce qui est typique des rendements financiers continus. Cependant, il y a des périodes où la volatilité est plus importante (p. ex., entre 2016 et 2018).
+
+Après cette période, il semble y avoir une stabilisation de la volatilité, bien que de légères fluctuations persistent jusqu'en 2024.
+
+### Vérification de la Stationnarité des Rendements
+
+```{r}
+acf(na.omit(usd_xof$Returns), main = "ACF des rendements continus de USD/XOF")
+
+```
+
+#### Hypothèse : Il y a pas d'autocorrelation. ça ressemble à un bruit blanc.
+
+```{r}
+library(tseries)
+adf_test_usd <- adf.test(na.omit(usd_xof$Returns), alternative = "stationary")
+print(adf_test_usd)
+
+```
+
+```{r}
+# Vérification de la stationnarité
+if (adf_test_usd$p.value < 0.05) {
+cat("La série est stationnaire (p-value :", adf_test_usd$p.value, ")\n")
+} else {
+cat("La série n'est pas stationnaire (p-value :", adf_test_usd$p.value, ")\n")
+}
+```
+
+```{r}
+library(FinTS)
+arch_test_usd <- ArchTest(usd_xof$Returns, lags = 5) # lags = nombre de retards
+print(arch_test_usd)
+```
+
+#### Constat : p-value = 2.2e-16 \< 0.05.
+
+Cela indique une hétéroscédasticité conditionnelle. On peut alors utiliser un modèle GARCH pour modéliser la volatilité de cette devise.
+
+### Modélisation de la volatilité avec un modèle GARCH
+
+#### Essai d'un modèle garch(1,1)
+
+```{r}
+library(fGarch)
+garch_model_usd <- garchFit(formula = ~ garch(1, 1), data = na.omit(usd_xof$Returns),
+                            trace = FALSE,show_col_types = FALSE)
+summary(garch_model_usd)
+
+```
+
+#### Résumé des coefficients :
+
+$\mu$(Moyenne des retours) : 8.8198\*10\^5
+
+On a p-value = 0.32102. Ce coefficient n'est pas significatif au seuil de 5 %. Cela signifie que la moyenne des retours n'a pas d'effet significatif sur le modèle.
+
+$\omega$(Constante de la variance) : 2.0916\*10\^7
+
+On a p-value=0.00279 : Ce coefficient est significatif . Cela montre que la constante dans l'équation de variance est importante.
+
+$\alpha_{1}$ (Effet ARCH, influence des chocs passés sur la volatilité actuelle) : 0.05890
+
+On a p-value = 2e-16 : Ce coefficient est hautement significatif, ce qui indique que les chocs passés ont un effet important sur la volatilité actuelle.
+
+$\beta_{1}$​ (Effet GARCH, persistance de la volatilité) : 0.9392
+
+On a p-value = 2e-16 : Ce coefficient est également très significatif, ce qui montre que la volatilité présente une forte persistance.
+
+#### Persistance
+
+La somme de $\alpha_{1} + \beta_{1} = 0.0589 + 0.9392 = 0.99812$ est très proche de 1, indiquant que la volatilité présente une longue mémoire (processus stationnaire mais très persistant). Cela signifie que les périodes de volatilité élevée (ou faible) tendent à durer longtemps.
+
+#### Temps moyen de retour à la moyenne :
+
+Le temps moyen de retour à la moyenne est une mesure importante, qui indique combien de temps, en moyenne, il faut pour que la volatilité conditionnelle retourne à sa valeur moyenne (la volatilité inconditionnelle). Dans un modèle GARCH(1,1), le temps moyen de retour à la moyenne peut être calculé comme :
+
+$\tau = \frac{1}{1-(\alpha_{1}+\beta_{1})}$
+
+Application avec vos données :
+
+$\tau = \frac{1}{1-(0.99812)} \simeq 531.914$
+
+Le temps moyen de retour à la moyenne est d'environ 532 périodes(jours dans notre cas). Cela indique que la volatilité revient très lentement à sa valeur moyenne en raison de la forte persistance( $\alpha_{1}+ \beta_{1}$ proche de 1) .
+
+### Tests Résiduels Standardisés
+
+#### Test de Jarque-Bera :
+
+On a p-value \< 0.05.
+
+Alors les résidus standardisés ne suivent pas une distribution normale.
+
+#### Test de Shapiro-Wilk :
+
+On a p-value \< 0.05.
+
+Confirme la non-normalité des résidus standardisés.
+
+#### Test de Ljung-Box (Q-statistics pour les résidus et résidus au carré) :
+
+Résidus $Q(10,15,20)$: Les p-values (0.0786,0.0846,0.1807) montrent que l'hypothèse d'indépendance des résidus ne peut pas être rejetée. Résidus au carré $Q^2(10,15,20)$: Les p-values (0.5197,0.1440,0.3085) indiquent que les résidus au carré ne présentent pas de dépendance significative. Cela suggère que le modèle capture bien la dynamique de la volatilité.
+
+#### Test LM-ARCH :
+
+On a p-value = 0.0913 \> 0.05. On ne peut donc pas rejeter l'hypothèse H0. Conclusion : L'absence d'effet ARCH est confirmée. Les résidus semblent avoir une variance constante. Les résultats obtenus par notre modèle garch(1,1) sont probablement fiables et ne sont pas biaisés par une hétéroscédasticité conditionnelle.
+
+```{r}
+# Prévisions de la volatilité conditionnelle
+volatility_garch_usd <- volatility(garch_model_usd)
+
+```
+
+```{r}
+ggplot(data = na.omit(usd_xof), aes(x = Date, y = volatility_garch_usd)) +
+  geom_line(color = "blue", size = 1) +
+  labs(title = "Volatilité conditionnelle de USD/XOF estimée par le modèle GARCH(1,1)",
+       x = "Date",
+       y = "Volatilité") +
+  theme_minimal()
+
+```
+
+#### Constat :
+
+#### Volatilité élevée en 2018 :
+
+Il y a un pic majeur de volatilité autour de 2018, indiquant une période de forte incertitude ou de fluctuations importantes sur le marché. Ce pic pourrait correspondre à un événement économique ou géopolitique significatif, comme des décisions politiques, des crises économiques ou des changements dans la politique monétaire.
+
+#### Volatilité généralement stable après 2018 :
+
+La volatilité semble décroître progressivement après 2018, ce qui pourrait indiquer que les conditions du marché deviennent moins imprévisibles avec le temps, ou que les investisseurs s'adaptent mieux aux conditions économiques.
+
+Bien que la volatilité soit globalement faible après 2018, des augmentations sporadiques sont visibles, notamment autour de 2020. Cela pourrait correspondre à des événements ponctuels, comme la pandémie de COVID-19, qui a eu un impact important sur les marchés financiers mondiaux.
+
+#### Volatilité conditionnelle basse vers la fin de la période :
+
+En 2024, la volatilité reste faible, proche de 0,005, ce qui pourrait indiquer une certaine stabilité sur le marché sous-jacent.
+
+## Paire de devise EUR/XOF
+
+```{r}
+summary(eur_xof$Close)
+
+```
+
+```{r}
+cat("Nombre de valeurs manquantes :", sum(is.na(eur_xof)), "\n")
+
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = eur_xof, aes(x = Date, y = Close)) +
+  geom_line(color = "blue", size = 1) + # Ligne bleue pour les prix
+  labs(title = "Évolution des prix de clôture (EUR/XOF)",
+       x = "Date",
+       y = "Prix de clôture (XOF)") +
+  theme_minimal()
+
+```
+
+#### Constat :
+
+Le prix du EUR/XOF est une constante. Elle ne varie pas depuis le début (2014) à aujourd'hui.
+
+Il n'est donc pas nécessaire d'étudier la volatilité du taux de chance EUR/XOF, car ce taux est constant et fixe.
+
+[**NB**]{.underline} : Le taux de change EUR/XOF, fixé à 655.957 XOF pour 1 EUR, est une **valeur stable et constante** depuis l'adoption de l'euro en 1999. Cette fixité repose sur des **accords monétaires solides entre les pays utilisant le Franc CFA et la zone euro**, garantissant une stabilité économique et une prévisibilité dans les échanges commerciaux.
+
+Cette caractéristique en fait une valeur sûre pour les conversions entre l'euro et le Franc CFA. **Elle offre une sécurité aux acteurs économiques, éliminant les risques de fluctuation inhérents aux devises flottantes. Tant que les accords monétaires sont maintenus, il n'y a pas de risque de hausse ou de baisse du taux, ce qui facilite la planification financière et les transactions internationales**.
+
+Cependant, cette stabilité s'accompagne de limites :
+
+-   Une absence de flexibilité face aux chocs économiques mondiaux.
+
+-   Une dépendance vis-à-vis des politiques monétaires de la zone euro.
+
+Le prix de cette devise étant constant, nous pouvons attribuer une **volatilité de 0 par convention** , car il n'y a aucun risque ou incertitude dans une série constante.
+
+## Paire de devise GBP/XOF
+
+```{r}
+summary(gbp_xof$Close)
+
+```
+
+#### Constat :
+
+La plus petite valeur de la devise est de 697.6 et la plus grande valeur est 945.
+
+```{r}
+cat("Nombre de valeurs manquantes :", sum(is.na(gbp_xof)), "\n")
+
+```
+
+```{r}
+
+ggplot(data = gbp_xof, aes(x = Date, y = Close)) +
+  geom_line(color = "blue", size = 1) + # Ligne bleue pour les prix
+  labs(title = "Évolution des prix de clôture (GBP/XOF)",
+       x = "Date",
+       y = "Prix de clôture (XOF)") +
+  theme_minimal()
+
+```
+
+```{r}
+acf(gbp_xof$Close, main = "ACF du prix de cloture de GBP/XOF")
+```
+
+```{r}
+library(dplyr)
+gbp_xof <- gbp_xof %>%
+  mutate(Returns = log(Close / lag(Close)))  # Calcul des rendements
+
+```
+
+```{r}
+plot(
+x =gbp_xof$Date, 
+y = gbp_xof$Returns, 
+type = "l", 
+main = "Rendements continus de GBP/XOF", 
+xlab = "Temps", 
+ylab = "Rendements" 
+)
+```
+
+#### Constat :
+
+Les amplitudes des variations des rendements sont importantes sur certaines périodes, ce qui reflète une volatilité accrue. Cela peut indiquer des phases d'instabilité économique ou d'événements influençant la livre sterling (GBP) par rapport au Franc CFA (XOF). Une tendance à la diminution des fluctuations est visible après 2020, suggérant une stabilisation relative des rendements. Cela peut être lié à une normalisation des marchés ou à une gestion plus prévisible des politiques monétaires dans les zones concernées.
+
+```{r}
+acf(na.omit(gbp_xof$Returns), main = "ACF des rendements continus de GBP/XOF")
+
+```
+
+#### Hypothèse :
+
+Il y a pas d'autocorrelation. ça ressemble à un bruit blanc.
+
+```{r}
+library(tseries)
+adf_test_gbp <- adf.test(na.omit(gbp_xof$Returns), alternative = "stationary")
+print(adf_test_gbp)
+
+```
+
+```{r}
+# Vérification de la stationnarité
+if (adf_test_gbp$p.value < 0.05) {
+cat("La série est stationnaire (p-value :", adf_test_gbp$p.value, ")\n")
+} else {
+cat("La série n'est pas stationnaire (p-value :", adf_test_gbp$p.value, ")\n")
+}
+```
+
+```{r}
+library(FinTS)
+arch_test_gbp <- ArchTest(gbp_xof$Returns)
+print(arch_test_gbp)
+```
+
+#### Constat : p-value = 5.461e-13 \< 0.05.
+
+Cela indique une hétéroscédasticité conditionnelle. On peut alors utiliser un modèle GARCH pour modéliser la volatilité de cette devise.
+
+### Modélisation de la volatilité avec un modèle GARCH
+
+#### Essai d'un modèle garch(1,1)
+
+```{r}
+library(fGarch)
+garch_model_gbp <- garchFit(formula = ~ garch(1, 1), data = na.omit(gbp_xof$Returns),
+                            trace = FALSE,show_col_types = FALSE)
+summary(garch_model_gbp)
+
+```
+
+### Analyse des paramètres du modèle GARCH(1,1):
+
+#### Paramètres estimés :
+
+-   Moyenne des rendements ($\mu$) : Très proche de $0$ ($3.385 \times 10^{-6}$) avec une p-valeur élevée ($0.9637$), indiquant qu'il n'y a pas de moyenne significative dans les rendements.
+
+-   Constante du modèle de variance ($\omega$) : Est significative avec une p-valeur de $0.0266$ ($<0.05$), montrant une base significative pour la volatilité.
+
+-   Impact des chocs passés ($\alpha_1$) : Est hautement significatif ($<0.05$) avec une valeur de $0.0518$, indiquant que les chocs passés influencent la volatilité.
+
+-   Persistance de la volatilité ($\beta_1$) : Est également très significatif ($<0.05$) avec une valeur de $0.9464$, suggérant une forte persistance de la volatilité. Cela signifie que les périodes de volatilité élevée ont tendance à durer longtemps.
+
+#### Interprétation générale des paramètres
+
+$$
+\alpha_1 + \beta_1 = 0.99821
+$$ Cela est très proche de $1$, ce qui indique que la volatilité est extrêmement persistante, un trait souvent observé dans les séries financières.
+
+#### Temps moyen de retour à la moyenne :
+
+Le temps moyen de retour à la moyenne est :
+
+$\tau = \frac{1}{1-(\alpha_{1}+\beta_{1})}$
+
+$\tau = \frac{1}{1-(0.99821)} \simeq 558.66$
+
+Le temps moyen de retour à la moyenne est d'environ 559 périodes(jours dans notre cas). Cela indique que la volatilité revient très lentement à sa valeur moyenne en raison de la forte persistance( $\alpha_{1}+ \beta_{1}$ proche de 1) .
+
+#### Résidus standardisés et diagnostic
+
+-   Tests de Ljung-Box appliqués aux résidus ($R$) et aux résidus au carré ($R^2$) : Les p-valeurs élevées ($>0.05$) suggèrent que les autocorrélations des résidus et des résidus au carré sont non significatives. Cela signifie que le modèle GARCH(1,1) capture bien la dynamique de la volatilité.
+
+-   Test LM ARCH : La p-valeur est de $0.8852$, indiquant l'absence d'effet ARCH résiduel dans les résidus. Cela confirme que le modèle est bien ajusté.
+
+-   Test Jarque-Bera : La p-valeur est de $0$, ce qui signifie que les résidus ne suivent pas une distribution normale. Cela est courant dans les séries financières où les distributions ont des queues lourdes.
+
+-   Le test Shapiro-Wilk a une p-valeur proche de 0, confirmant que les résidus ne sont pas normlement distribués.
+
+```{r}
+# Prévisions de la volatilité conditionnelle
+volatility_garch_gbp <- volatility(garch_model_gbp)
+
+```
+
+```{r}
+ggplot(data = na.omit(gbp_xof), aes(x = Date, y = volatility_garch_gbp)) +
+  geom_line(color = "blue", size = 1) +
+  labs(title = "Volatilité conditionnelle de GBP/XOF estimée par le modèle GARCH(1,1)",
+       x = "Date",
+       y = "Volatilité") +
+  theme_minimal()
+
+```
+
+#### Constat :
+
+##### Pics de volatilité :
+
+La volatilité conditionnelle a atteint des niveaux très élevés à certains moments, comme autour de 2016 et 2020. Ces pics peuvent être associés à des événements économiques ou politiques majeurs, tels que : 2016 : Le Brexit, qui a provoqué une grande incertitude sur le marché de la livre sterling (GBP), a pu entraîner une volatilité accrue. 2020 : La pandémie de COVID-19 a également fortement impacté les marchés financiers, augmentant la volatilité des devises.
+
+##### Retour à un niveau stable :
+
+Après ces périodes de forte volatilité, la volatilité semble diminuer progressivement pour se stabiliser autour de 0.004 depuis 2022.
+
+##### Persistance de la volatilité :
+
+La volatilité montre une certaine persistance dans ses cycles. Cela signifie qu'une augmentation soudaine de la volatilité tend à durer avant de se stabiliser. Ce comportement est cohérent avec les résultats du modèle GARCH(1,1), où $\beta_{1}$était proche de 1.
+
+##### Comparaison temporelle Périodes calmes :
+
+-   **Périodes calmes** : Entre les pics, la volatilité reste relativement basse et stable, reflétant une période de tranquillité sur les marchés.
+
+-   **Périodes agitées** : Les pics montrent que certains événements exceptionnels provoquent des augmentations soudaines de la volatilité.
+
+### Conclusion :
+
+Le GBP/XOF est une paire de devises avec une volatilité généralement modérée, mais qui connaît des pics soudains en raison d'événements exceptionnels. Ces variations sont cohérentes avec les grands chocs économiques et politiques des dernières années. Ces observations mettent en évidence la nécessité d'une gestion proactive des risques en période de turbulence.
+
+## Paire de devise CAD/XOF
+
+```{r}
+summary(cad_xof$Close)
+
+```
+
+La plus petite valeur de cette devise est 406.2 et la plus grande valeur est 508.4
+
+```{r}
+cat("Nombre de valeurs manquantes :", sum(is.na(cad_xof)), "\n")
+
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = cad_xof, aes(x = Date, y = Close)) +
+  geom_line(color = "blue", size = 1) + # Ligne bleue pour les prix
+  labs(title = "Évolution des prix de clôture (CAD/XOF)",
+       x = "Date",
+       y = "Prix de clôture (XOF)") +
+  theme_minimal()
+
+```
+
+```{r}
+acf(cad_xof$Close, main = "ACF du prix de cloture de CAD/XOF")
+```
+
+```{r}
+library(dplyr)
+cad_xof <- cad_xof %>%
+  mutate(Returns = log(Close / lag(Close)))  # Calcul des rendements
+
+```
+
+```{r}
+plot(
+x =cad_xof$Date, 
+y = cad_xof$Returns, 
+type = "l", 
+main = "Rendements continus de CAD/XOF", 
+xlab = "Temps", 
+ylab = "Rendements" 
+)
+```
+
+```{r}
+acf(na.omit(cad_xof$Returns), main = "ACF des rendements continus du CAD/XOF")
+
+```
+
+#### Hypothèse :
+
+#### Il y a pas d'autocorrelation. ça ressemble à un bruit blanc.
+
+```{r}
+library(tseries)
+adf_test_cad <- adf.test(na.omit(cad_xof$Returns), alternative = "stationary")
+print(adf_test_cad)
+
+```
+
+```{r}
+# Vérification de la stationnarité
+if (adf_test_cad$p.value < 0.05) {
+cat("La série est stationnaire (p-value :", adf_test_cad$p.value, ")\n")
+} else {
+cat("La série n'est pas stationnaire (p-value :", adf_test_cad$p.value, ")\n")
+}
+```
+
+```{r}
+library(FinTS)
+arch_test_cad <- ArchTest(cad_xof$Returns) 
+print(arch_test_cad)
+```
+
+#### Constat : p-value = 2.2e-16 \< 0.05.
+
+Cela indique une hétéroscédasticité conditionnelle. On peut alors utiliser un modèle GARCH pour modéliser la volatilité de cette devise.
+
+### Modélisation de la volatilité avec un modèle GARCH
+
+#### Essai d'un modèle garch(1,1)
+
+```{r}
+library(fGarch)
+garch_model_cad <- garchFit(formula = ~ garch(1, 1), data = na.omit(cad_xof$Returns), 
+                            trace = FALSE,show_col_types = FALSE)
+summary(garch_model_cad)
+
+```
+
+#### Constat :
+
+**Moyenne des rendements** $\mu$ : 1.2898 \* 10\^-6
+
+Non significatif(p=0.98759), ce qui suggère que la moyenne des rendements est proche de zéro.
+
+**Constante du modèle de variance** $\omega$ : 1.4685 \* 10\^-7
+
+Significatif (p=0.00545), indiquant une base significative pour la volatilité.
+
+**Impact des chocs passés** $\alpha_{1}$ : 0.0409
+
+Très significatif (p\<0.001), ce qui montre que les chocs passés influencent fortement la volatilité.
+
+**Persistance de la volatilité** $\beta_{1}$ : 0.9534
+
+Très significatif (p\<0.001), indiquant que la volatilité est hautement persistante
+
+Persistance : La somme de $\alpha{1} + \beta{1} = 0.0409 + 0.9534 = 0.9943$ est très proche de 1, indiquant que la volatilité présente une longue mémoire.
+
+#### Temps moyen de retour à la moyenne :
+
+Le temps moyen de retour à la moyenne est :
+
+$\tau = \frac{1}{1-(\alpha_{1}+\beta_{1})}$
+
+$\tau = \frac{1}{1-(0.9943)} \simeq 175.44$
+
+Le temps moyen de retour à la moyenne est d'environ 175 périodes(jours dans notre cas). Cela indique que la volatilité revient très lentement à sa valeur moyenne en raison de la forte persistance( $\alpha_{1}+ \beta_{1}$ proche de 1) . \#### Diagnostic des résidus :
+
+1.  Normalité :
+
+-   Test de Jacque Bera (p=0.000) : Les résidus ne suivent pas une distribution normale
+
+-   Test de Shapiro - Wilk (p = 8.31 \* 10\^-14) : confirme une non-normalité, ce qui est commun des séries financières avec des queues épaises.
+
+2.  Autocorrélation
+
+-   Test de Ljung-Box sur les résidus : Les $Q(10),Q(15),Q(20)$ ont des p-value \> 0.05, indiquant une absence d'autocorrélation significative.
+
+-   Test de Ljung-Box sur les carrés résidus : Bien que les p-valeurs soient faibles, elles ne sont pas inférieures à 0.05, suggérant que le modèle capture l'effet ARCH.
+
+3.  Effet ARCH résiduel Test LM ARCH (p=0.184) : Aucun effet ARCH résiduel significatif, confirmant que le modèle GARCH(1,1) est bien ajusté.
+
+```{r}
+# Prévisions de la volatilité conditionnelle
+volatility_garch_cad <- volatility(garch_model_cad)
+
+```
+
+```{r}
+ggplot(data = na.omit(cad_xof), aes(x = Date, y = volatility_garch_cad)) +
+  geom_line(color = "blue", size = 1) +
+  labs(title = "Volatilité conditionnelle de CAD/XOF estimée par le modèle GARCH(1,1)",
+       x = "Date",
+       y = "Volatilité") +
+  theme_minimal()
+
+```
+
+#### Constats :
+
+Tendances globales de la volatilité : La volatilité a diminué de manière générale depuis les pics élevés observés en 2015-2016. Une période de volatilité exceptionnellement élevée est visible autour de 2020, ce qui correspond probablement à des événements économiques ou financiers majeurs, comme la pandémie de COVID-19.
+
+Épisodes de volatilité : Les périodes de volatilité élevée (ex. : 2016, 2020) sont suivies de périodes de stabilisation où la volatilité tend à diminuer progressivement. Ces fluctuations indiquent que les événements externes (crises économiques, chocs sur les marchés financiers) ont un impact direct sur le taux de change.
+
+Persistance de la volatilité : Une fois que la volatilité augmente, elle reste élevée pendant un certain temps avant de revenir à des niveaux plus bas.
+
+## Paire de devise AUD/XOF
+
+```{r}
+summary(aud_xof$Close)
+
+```
+
+```{r}
+cat("Nombre de valeurs manquantes :", sum(is.na(aud_xof)), "\n")
+
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = aud_xof, aes(x = Date, y = Close)) +
+  geom_line(color = "blue", size = 1) + # Ligne bleue pour les prix
+  labs(title = "Évolution des prix de clôture (AUD/XOF)",
+       x = "Date",
+       y = "Prix de clôture (XOF)") +
+  theme_minimal()
+
+```
+
+```{r}
+acf(aud_xof$Close, main = "ACF du prix de cloture de AUD/XOF")
+```
+
+```{r}
+library(dplyr)
+aud_xof <- aud_xof %>%
+  mutate(Returns = log(Close / lag(Close)))  
+```
+
+```{r}
+plot(
+x =aud_xof$Date, 
+y = aud_xof$Returns, 
+type = "l", 
+main = "Rendements continus de AUD/XOF", 
+xlab = "Temps", 
+ylab = "Rendements" 
+)
+```
+
+```{r}
+acf(na.omit(aud_xof$Returns), main = "ACF des rendements continus de AUD/XOF")
+
+```
+
+#### Hypothèse : Il y a pas d'autocorrelation. ça ressemble à un bruit blanc.
+
+```{r}
+library(tseries)
+adf_test_aud <- adf.test(na.omit(aud_xof$Returns), alternative = "stationary")
+print(adf_test_aud)
+
+```
+
+```{r}
+# Vérification de la stationnarité
+if (adf_test_aud$p.value < 0.05) {
+cat("La série est stationnaire (p-value :", adf_test_aud$p.value, ")\n")
+} else {
+cat("La série n'est pas stationnaire (p-value :", adf_test_aud$p.value, ")\n")
+}
+```
+
+```{r}
+library(FinTS)
+arch_test_aud <- ArchTest(aud_xof$Returns) 
+print(arch_test_aud)
+```
+
+#### Constat : p-value = 2.2e-16 \< 0.05.
+
+Cela indique une hétéroscédasticité conditionnelle. On peut alors utiliser un modèle GARCH pour modéliser la volatilité de cette devise.
+
+### Modélisation de la volatilité avec un modèle GARCH
+
+#### Essai d'un modèle garch(1,1)
+
+```{r}
+library(fGarch)
+garch_model_aud <- garchFit(formula = ~ garch(1, 1), data = na.omit(aud_xof$Returns), 
+                            
+trace = FALSE,show_col_types = FALSE)
+summary(garch_model_aud)
+```
+
+### Analyse des paramètres du modèle GARCH(1,1):
+
+#### Paramètres estimés :
+
+-   Moyenne des rendements ($\mu$) : Très proche de $0$ ($-3.0023 \times 10^{-5}$) avec une p-valeur élevée ($0.6920$), indiquant qu'il n'y a pas de moyenne significative dans les rendements.
+
+-   Constante du modèle de variance ($\omega$) : Est significative avec une p-valeur de $0.0022$ ($<0.05$) , montrant une base significative pour la volatilité conditionnelle.
+
+-   Impact des chocs passés ($\alpha_1$) : Est hautement significatif (p-value$<0.05$) avec une valeur de $0.0538$, indiquant que les chocs passés influencent la volatilité.
+
+-   Persistance de la volatilité ($\beta_1$) : Est également très significatif (p-value$<0.05$) avec une valeur de $0.9457$, suggérant une forte persistance de la volatilité. Cela signifie que les périodes de volatilité élevée ont tendance à durer longtemps.
+
+#### Interprétation générale des paramètres
+
+$$
+\alpha_1 + \beta_1 = 0.9995
+$$ Cela est très proche de $1$, ce qui indique que la volatilité est extrêmement persistante, un trait souvent observé dans les séries financières.
+
+#### Temps moyen de retour à la moyenne :
+
+Le temps moyen de retour à la moyenne est :
+
+$\tau = \frac{1}{1-(\alpha_{1}+\beta_{1})}$
+
+$\tau = \frac{1}{1-(0.9995)} = 2000$
+
+Le temps moyen de retour à la moyenne est d'environ 2000 périodes(jours dans notre cas). Cela indique que la volatilité revient très lentement à sa valeur moyenne en raison de la forte persistance( $\alpha_{1}+ \beta_{1}$ proche de 1) .
+
+#### Résidus standardisés et diagnostic
+
+-   Test de Ljung-Box sur les résidus : Les $Q(10),Q(15),Q(20)$ ont des p-value \> 0.05, indiquant une absence d'autocorrélation significative. Alors le modèle capture bien la dynamique des rendements.
+
+-   Test de Ljung-Box sur les carrés résidus : Les p-valeur sont inférieures à 0.05, ce qui montre une autocorrélation résiduelle dans les résidus au carré, ce qui peut indiquer que des améliorations au modèle sont possibles.
+
+-   Test LM ARCH : La p-valeur est de $0.00696$, indiquant un effet ARCH résiduel significatif dans les résidus. Cela suggère que le modèle actuel ne capture pas complètement la dynamique de la volatilité.
+
+-   Test Jarque-Bera : La p-valeur est de $0$, ce qui signifie que les résidus ne suivent pas une distribution normale.
+
+-   Le test Shapiro-Wilk a une p-valeur proche de 0, confirmant que les résidus ne sont pas normlement distribués.
+
+### Conclusion sur la volatilité de l'AUD/XOF
+
+Bien que le modèle GARCH(1,1) capte bien la dynamique de la volatilité, des améliorations sont possibles pour mieux capturer certaines dépendances résiduelles.
+
+```{r}
+# Prévisions de la volatilité conditionnelle
+volatility_garch_aud <- volatility(garch_model_aud)
+
+```
+
+```{r}
+ggplot(data = na.omit(aud_xof), aes(x = Date, y = volatility_garch_aud)) +
+  geom_line(color = "blue", size = 1) +
+  labs(title = "Volatilité conditionnelle de AUD/XOF estimée par le modèle GARCH(1,1)",
+       x = "Date",
+       y = "Volatilité") +
+  theme_minimal()
+
+```
+
+#### 
+
+Observations :
+
+1.  **Périodes de forte volatilité :**
+
+    -   Une augmentation notable de la volatilité autour de 2017-2018. Cela peut être associé à des événements économiques, politiques ou financiers spécifiques à cette période affectant l'AUD ou le XOF.
+
+    -   D'autres pics de volatilité se produisent également autour de 2020, probablement liés aux turbulences économiques globales causées par la pandémie de COVID-19.
+
+2.  **Tendance générale :**
+
+    -   Une diminution progressive de la volatilité moyenne depuis les pics de 2017-2018. Cela pourrait indiquer une stabilisation des marchés concernés après une période d'incertitude.
+
+3.  **Volatilité récente :**
+
+    -   Les niveaux de volatilité depuis 2022 semblent relativement faibles et stables, indiquant potentiellement des conditions de marché plus prévisibles pour le taux de change AUD/XOF.
+
+4.  **Variations cycliques :**
+
+    -   On observe des fluctuations régulières dans la volatilité, ce qui pourrait refléter des cycles économiques ou des événements saisonniers.
+
+#### Conclusions :
+
+Les périodes de forte volatilité représentent des opportunités (mais aussi des risques) pour les investisseurs, tandis que des périodes de faible volatilité favorisent des prévisions plus fiables pour les entreprises et les décideurs.
+
+## Paire de devise CHF/XOF
+
+```{r}
+summary(chf_xof$Close)
+
+```
+
+```{r}
+cat("Nombre de valeurs manquantes :", sum(is.na(chf_xof)), "\n")
+
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = chf_xof, aes(x = Date, y = Close)) +
+  geom_line(color = "blue", size = 1) + # Ligne bleue pour les prix
+  labs(title = "Évolution des prix de clôture (CHF/XOF)",
+       x = "Date",
+       y = "Prix de clôture (XOF)") +
+  theme_minimal()
+
+```
+
+```{r}
+acf(chf_xof$Close, main = "ACF du prix de cloture de CHF/XOF")
+```
+
+```{r}
+library(dplyr)
+chf_xof <- chf_xof %>%
+  mutate(Returns = log(Close / lag(Close)))  # Calcul des rendements
+
+```
+
+```{r}
+plot(
+x =chf_xof$Date, 
+y = chf_xof$Returns, 
+type = "l", 
+main = "Rendements continus de CHF/XOF", 
+xlab = "Temps", 
+ylab = "Rendements" 
+)
+```
+
+```{r}
+acf(na.omit(chf_xof$Returns), main = "ACF des rendements continus du CHF/XOF")
+
+```
+
+#### Hypothèse : Il y a pas d'autocorrelation. ça ressemble à un bruit blanc.
+
+```{r}
+library(tseries)
+adf_test_chf <- adf.test(na.omit(chf_xof$Returns), alternative = "stationary")
+print(adf_test_chf)
+
+```
+
+```{r}
+# Vérification de la stationnarité
+if (adf_test_chf$p.value < 0.05) {
+cat("La série est stationnaire (p-value :", adf_test_chf$p.value, ")\n")
+} else {
+cat("La série n'est pas stationnaire (p-value :", adf_test_chf$p.value, ")\n")
+}
+```
+
+```{r}
+arch_test_chf <- ArchTest(chf_xof$Returns) 
+print(arch_test_chf)
+```
+
+#### Constat : p-value = 0.9964 \> 0.05.
+
+On ne peut rejeter l'hypothèse nulle. Il n'y a pas d'effets ARCH dans la série(absence d'hétéroscédasticité conditionnelle). Cela signifie que la variance conditionnelle est stable au fil du temps et qu'il y a pas de dépendance entre les valeurs passées des résidus au carré.
+
+#### Autre test pour confirmer l'absence d'effets ARCH
+
+```{r}
+Box.test(chf_xof$Returns^2, type = "Ljung-Box")
+
+```
+
+#### Constat :
+
+On a p-value \> 0.05, ce qui indique qu'il n'y a pas de dépendance significative dans les résidus au carré.
+
+Les modèles GARCH ne sont pas adaptés, car il n'y a pas de volatilité conditionnelle à modéliser.
+
+Dans ce cas, plusieurs options sont possibles:
+
+-   **Option 1 : Utiliser une volatilité historique simple.**
+
+    -   Calculez l'écart-type des returns (volatilité historique). C'est une approximation valable quand les modèles GARCH ne s'appliquent pas.
+
+```{r}
+volatility_simple_chf = sd(na.omit(chf_xof$Returns))
+print(volatility_simple_chf)
+```
+
+-   **Option 2 : Imputer une valeur "NA" pour indiquer que la volatilité conditionnelle n'a pas pu être modélisée.** Cela permet de ne pas biaiser nos résultats en forçant une approximation.
+
+Nous allons opter pour la 2ème option.
+
+## Paire de devise CNY/XOF
+
+```{r}
+summary(cny_xof$Close)
+
+```
+
+```{r}
+cat("Nombre de valeurs manquantes :", sum(is.na(cny_xof)), "\n")
+
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = cny_xof, aes(x = Date, y = Close)) +
+  geom_line(color = "blue", size = 1) + # Ligne bleue pour les prix
+  labs(title = "Évolution des prix de clôture (CNY/XOF)",
+       x = "Date",
+       y = "Prix de clôture (XOF)") +
+  theme_minimal()
+
+```
+
+```{r}
+acf(cny_xof$Close, main = "ACF du prix de cloture de CNY/XOF")
+```
+
+```{r}
+library(dplyr)
+cny_xof <- cny_xof %>%
+  mutate(Returns = log(Close / lag(Close)))  # Calcul des rendements
+
+```
+
+```{r}
+plot(
+x =cny_xof$Date, 
+y = cny_xof$Returns, 
+type = "l", 
+main = "Rendements continus de CNY/XOF", 
+xlab = "Temps", 
+ylab = "Rendements" 
+)
+```
+
+```{r}
+acf(na.omit(cny_xof$Returns), main = "ACF des rendements continus du CNY/XOF")
+
+```
+
+#### Hypothèse : Il y a pas d'autocorrelation. ça ressemble à un bruit blanc.
+
+```{r}
+library(tseries)
+adf_test_cny <- adf.test(na.omit(cny_xof$Returns), alternative = "stationary")
+print(adf_test_cny)
+
+```
+
+```{r}
+# Vérification de la stationnarité
+if (adf_test_cny$p.value < 0.05) {
+cat("La série est stationnaire (p-value :", adf_test_cny$p.value, ")\n")
+} else {
+cat("La série n'est pas stationnaire (p-value :", adf_test_cny$p.value, ")\n")
+}
+```
+
+```{r}
+arch_test_cny <- ArchTest(cny_xof$Returns) 
+print(arch_test_cny)
+```
+
+#### Constat : p-value = 2.2e-16 \< 0.05.
+
+Cela indique une hétéroscédasticité conditionnelle. On peut alors utiliser un modèle GARCH pour modéliser la volatilité de cette devise.
+
+### Modélisation de la volatilité avec un modèle GARCH
+
+#### Essai d'un modèle garch(1,1)
+
+```{r}
+library(fGarch)
+garch_model_cny <- garchFit(formula = ~ garch(1, 1), data = na.omit(cny_xof$Returns),
+                            
+trace = FALSE,show_col_types = FALSE)
+summary(garch_model_cny)
+
+```
+
+#### Analyse des paramètres du modèle GARCH(1,1):
+
+[**Paramètres estimés**]{.underline} :
+
+**Moyenne des rendements** $\mu$ : Très proche de 0, avec une p-valeur élevée 0.87686, indiquant qu'il n'y a pas de tendance significative dans les rendements.
+
+**Constante du modèle de variance** $\omega$ : Est très significative avec une p-valeur de 0.00017 \< 0.05 , montrant une base importance pour la volatilité conditionnelle, même en l'absence de chocs passés ou de persistance.
+
+**Impact des chocs passés** $\alpha_{1}$ : Est très significatif (p-value\<0.05) , indiquant que les chocs passés ont un impact modéré sur la volatilité actuelle .
+
+**Persistance de la volatilité** $\beta_{1}$ : Est également très significatif (p-value\<0.05) avec une valeur de 0.95101. La persistance de la volatilité est très forte, reflétant une mémoire longue de la volatilité conditionnelle.
+
+[**Interprétation générale des paramètres :**]{.underline}
+
+$\alpha{1} + \beta{1} = 0.95101 + 0.046804 = 0.997814$
+
+La somme des coefficients est très proche de 1, cela montre que la volatilité est extrêmement persistance. Les chocs sur les rendements ont un effet de longue durée sur la volatilité. Cela entraîne une lente dissipation de la volatilité après des périodes de turbulences.
+
+[**Temps moyen de retour à la moyenne**]{.underline} :
+
+Le temps moyen de retour à la moyenne est :
+
+$\tau = \frac{1}{1-(\alpha_{1} + \beta_{1})}$
+
+$\tau = \frac{1}{1-(0.997814)} \simeq 457.46$
+
+Le temps moyen de retour à la moyenne est d'environ 457 périodes(jours dans notre cas). Cela indique que la volatilité revient très lentement à sa valeur moyenne en raison de la forte persistance proche de 1.
+
+[**Résidus standardisés et diagnostic**]{.underline} **:**
+
+**Test de Ljung-Box sur les résidus** : Les $Q(10),Q(15),Q(20)$ ont des p-value \< 0.05.
+
+**Conclusion** : Une autocorrélation significative subsite dans les résidus standardisés, suggérant que le modèle pourrait ne pas capturer pleinement la dynamique des rendements.
+
+**Test de Ljung-Box sur les carrés résidus** : Les p-valeur sont inférieures à 0.05 montrant une autocorrélation significative dans les résidus au carré, ce qui indique que le modèle pourrait être amélioré.
+
+**Test LM ARCH** : La p-valeur est de 0.0509, iEffet ARCH marginalement significatif, suggérant que le modèle capture globalement la dynamique mais qu'il pourrait être encore affiné.
+
+**Test Jarque-Bera** : La p-valeur \< 0.05 , ce qui signifie que les résidus ne suivent pas une distribution normale.
+
+Le **test Shapiro-Wilk** a une p-valeur inférieure à 0.05, confirmant que les résidus ne sont pas normlement distribués.
+
+```{r}
+# Prévisions de la volatilité conditionnelle
+volatility_garch_cny <- volatility(garch_model_cny)
+
+```
+
+```{r}
+ggplot(data = na.omit(cny_xof), aes(x = Date, y = volatility_garch_cny)) +
+  geom_line(color = "blue", size = 1) +
+  labs(title = "Volatilité conditionnelle de CNY/XOF estimée par le modèle GARCH(1,1)",
+       x = "Date",
+       y = "Volatilité") +
+  theme_minimal()
+
+```
+
+### Observations :
+
+1.  **Périodes de forte volatilité :**
+
+    -   Une augmentation notable de la volatilité autour de 2017-2018. Cela peut être associé à des événements économiques, politiques ou financiers spécifiques à cette période affectant l'AUD ou le XOF.
+
+    -   D'autres pics de volatilité se produisent également autour de 2020, probablement liés aux turbulences économiques globales causées par la pandémie de COVID-19.
+
+2.  **Tendance générale :**
+
+    -   Une diminution progressive de la volatilité moyenne depuis les pics de 2017-2018. Cela pourrait indiquer une stabilisation des marchés concernés après une période d'incertitude.
+
+3.  **Volatilité récente :**
+
+    -   Les niveaux de volatilité depuis 2022 semblent relativement faibles et stables, indiquant potentiellement des conditions de marché plus prévisibles pour le taux de change AUD/XOF.
+
+4.  **Variations cycliques :**
+
+    -   On observe des fluctuations régulières dans la volatilité, ce qui pourrait refléter des cycles économiques ou des événements saisonniers.
+
+### Conclusions possibles :
+
+1.  **Facteurs explicatifs des pics de volatilité :**
+
+    -   Les périodes de forte volatilité peuvent être dues à des chocs économiques spécifiques, tels que des fluctuations des prix des matières premières (importantes pour l'Australie), des changements de politique monétaire ou des crises globales comme la pandémie.
+
+2.  **Stabilisation récente :**
+
+    -   La stabilisation de la volatilité pourrait être liée à une meilleure gestion des politiques économiques, une atténuation des risques mondiaux ou des relations économiques plus stables entre les pays concernés.
+
+3.  **Perspectives pour les investisseurs et décideurs :**
+
+    -   Les périodes de forte volatilité représentent des opportunités (mais aussi des risques) pour les investisseurs, tandis que des périodes de faible volatilité favorisent des prévisions plus fiables pour les entreprises et les décideurs.
+
+4.  **Impact des événements exogènes :**
+
+    -   Les crises globales, comme en 2020, semblent avoir un impact marqué sur la volatilité. Cela souligne l'importance pour les modèles prédictifs de tenir compte de ces événements exogènes.
+
+## Paire de devise HKD/XOF
+
+```{r}
+summary(hkd_xof$Close)
+
+```
+
+```{r}
+cat("Nombre de valeurs manquantes :", sum(is.na(hkd_xof)), "\n")
+
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data = hkd_xof, aes(x = Date, y = Close)) +
+  geom_line(color = "blue", size = 1) + # Ligne bleue pour les prix
+  labs(title = "Évolution des prix de clôture (HKD/XOF)",
+       x = "Date",
+       y = "Prix de clôture (XOF)") +
+  theme_minimal()
+
+```
+
+```{r}
+acf(hkd_xof$Close, main = "ACF du prix de cloture de HKD/XOF")
+```
+
+```{r}
+library(dplyr)
+hkd_xof <- hkd_xof %>%
+  mutate(Returns = log(Close / lag(Close)))  
+
+```
+
+```{r}
+plot(
+x =hkd_xof$Date, 
+y = hkd_xof$Returns, 
+type = "l", 
+main = "Rendements continus de HKD/XOF", 
+xlab = "Temps", 
+ylab = "Rendements" 
+)
+```
+
+```{r}
+acf(na.omit(hkd_xof$Returns), main = "ACF des rendements continus du HKD/XOF")
+
+```
+
+#### Hypothèse : Il y a pas d'autocorrelation. ça ressemble à un bruit blanc.
+
+```{r}
+library(tseries)
+adf_test_hkd <- adf.test(na.omit(hkd_xof$Returns), alternative = "stationary")
+print(adf_test_hkd)
+
+```
+
+```{r}
+# Vérification de la stationnarité
+if (adf_test_hkd$p.value < 0.05) {
+cat("La série est stationnaire (p-value :", adf_test_hkd$p.value, ")\n")
+} else {
+cat("La série n'est pas stationnaire (p-value :", adf_test_hkd$p.value, ")\n")
+}
+```
+
+```{r}
+library(FinTS)
+arch_test_hkd <- ArchTest(hkd_xof$Returns) 
+print(arch_test_hkd)
+```
+
+#### Constat : p-value = 2.2e-16 \< 0.05.
+
+Cela indique une hétéroscédasticité conditionnelle. On peut alors utiliser un modèle GARCH pour modéliser la volatilité de cette devise.
+
+### Modélisation de la volatilité avec un modèle GARCH
+
+#### Essai d'un modèle garch(1,1)
+
+```{r}
+library(fGarch)
+garch_model_hkd <- garchFit(formula = ~ garch(1, 1), data = na.omit(hkd_xof$Returns), 
+                            
+trace = FALSE,show_col_types = FALSE)
+summary(garch_model_hkd)
+
+```
+
+#### Analyse des paramètres du modèle GARCH(1,1):
+
+[**Paramètres estimés**]{.underline} :
+
+**Moyenne des rendements** $\mu$ : Très proche de 0, avec une p-valeur élevée 0.351162, ce qui indique que'elle n'est pas significativement différente de 0
+
+**Constante du modèle de variance** $\omega$ : La valeur valeur estimée est très faible mais statiquement significative(p-value\<0.05)
+
+**Impact des chocs passés** $\alpha_{1}$ : Estimée à 0.04036, il est hautement significatif (p-value \< 0.05). Ce paramètre mesure la réaction à court terme de la volatilité face aux chocs.
+
+**Persistance de la volatilité** $\beta_{1}$ : Estimée à 0.95857, il est très significatif.
+
+[**Interprétation générale des paramètres :**]{.underline}
+
+$\alpha{1} + \beta{1} = 0.99893$
+
+La somme des coefficients est très proche de 1, indique une forte persistance de la volatilité, ce qui signifie que les chocs sur la volatilité mettent du temps à se dissiper.
+
+[**Temps moyen de retour à la moyenne**]{.underline} :
+
+Le temps moyen de retour à la moyenne est :
+
+$\tau = \frac{1}{1-(\alpha_{1} + \beta_{1})}$
+
+$\tau = \frac{1}{1-(0.99893)} \simeq 934.58$
+
+Le temps moyen de retour à la moyenne est d'environ 935 périodes(jours dans notre cas). Cela indique que la volatilité revient très lentement à sa valeur moyenne en raison de la forte persistance proche de 1.
+
+[**Résidus standardisés et diagnostic**]{.underline} **:**
+
+**Test de Ljung-Box sur les résidus** et **sur les carrés des résidus**: Les $Q(10),Q(15),Q(20)$ ont des p-value qui montrent une autocorrélation persistante dans les résidus et les résidus au carré, indiquant que le modèle ne capture pas parfaitement toutes les dynamiques des données.
+
+**Test LM ARCH** : La p-valeur est de 0.024 , ce qui suggère qu'il reste une hétéroscédasticité résiduelle non capturée par le modèle.
+
+**Test Jarque-Bera** : La p-valeur \< 0.05 , ce qui signifie que les résidus ne suivent pas une distribution normale.
+
+Le **test Shapiro-Wilk** a une p-valeur inférieure à 0.05, confirmant que les résidus ne sont pas normlement distribués.
+
+Conclusion : Le modèle GARCH(1,1) capture bien la persistance de la volatilité dans les données ( $\beta_{1}$ élevé) mais les diagnostics des résidus indiquent que certains aspects des dynamiques de la série ne sont pas complètement expliqués. Nous pourrions envisager :
+
+-   Un modèle plus complexe, comme un GARCH(1, 1) avec une distribution conditionnelle différente (par exemple, t-Student ou GED pour gérer les queues épaisses).
+
+-   Une vérification des effets d'autocorrélation pour ajuster davantage le modèle.
+
+```{r}
+# Prévisions de la volatilité conditionnelle
+volatility_garch_hkd <- volatility(garch_model_hkd)
+
+```
+
+```{r}
+ggplot(data = na.omit(hkd_xof), aes(x = Date, y = volatility_garch_hkd)) +
+  geom_line(color = "blue", size = 1) +
+  labs(title = "Volatilité conditionnelle de HKD/XOF estimée par le modèle GARCH(1,1)",
+       x = "Date",
+       y = "Volatilité") +
+  theme_minimal()
+
+```
+
+### Observations :
+
+1.  **Comportement de la volatilité :**
+
+    -   La volatilité présente des pics significatifs à certaines périodes, par exemple vers 2016 et 2018, indiquant des périodes de forte instabilité.
+
+    -   Entre 2020 et 2024, la volatilité semble relativement faible avec des fluctuations modérées, mais elle reste non négligeable.
+
+2.  **Tendances générales :**
+
+    -   La volatilité semble diminuer de manière globale après les pics élevés, particulièrement après 2018.
+
+    -   Les périodes de forte volatilité semblent ponctuelles, suggérant des événements spécifiques ayant provoqué ces mouvements.
+
+3.  **Stabilité relative :**
+
+    -   Les faibles valeurs observées après 2020 peuvent indiquer une stabilité accrue dans le comportement de la paire de devises HKD/XOF.
+
+4.  **Persistances des chocs :**
+
+    -   Les variations indiquent une persistance dans les effets de volatilité, typique des modèles GARCH, où les chocs de volatilité tendent à s'auto-entretenir avant de se dissiper progressivement.
+
+### Conclusions possibles :
+
+1.  **Volatilité significative dans le passé :**
+
+    -   La paire HKD/XOF a connu des périodes de volatilité importante, ce qui pourrait correspondre à des événements économiques ou politiques influençant les marchés.
+
+2.  **Stabilisation récente :**
+
+    -   Depuis 2020, la paire semble moins volatile, ce qui pourrait refléter une amélioration des conditions économiques ou une réduction des incertitudes.
+
+3.  **Risque pour les investisseurs :**
+
+    -   La volatilité historique montre qu'il existe des périodes de risques accrus, ce qui pourrait influencer les décisions des investisseurs cherchant à se couvrir contre les fluctuations du HKD/XOF.
+
+## Paire de devise JPY/XOF
+
+```{r}
+summary(jpy_xof$Close)
+
+```
+
+```{r}
+cat("Nombre de valeurs manquantes :", sum(is.na(jpy_xof)), "\n")
+
+```
+
+```{r}
+ggplot(data = jpy_xof, aes(x = Date, y = Close)) +
+  geom_line(color = "blue", size = 1) + # Ligne bleue pour les prix
+  labs(title = "Évolution des prix de clôture (JPY/XOF)",
+       x = "Date",
+       y = "Prix de clôture (XOF)") +
+  theme_minimal()
+
+```
+
+```{r}
+acf(jpy_xof$Close, main = "ACF du prix de cloture de JPY/XOF")
+```
+
+```{r}
+library(dplyr)
+jpy_xof <- jpy_xof %>%
+  mutate(Returns = log(Close / lag(Close))) 
+
+```
+
+```{r}
+plot(
+x =jpy_xof$Date, 
+y = jpy_xof$Returns, 
+type = "l", 
+main = "Rendements continus de JPY/XOF", 
+xlab = "Temps", 
+ylab = "Rendements" 
+)
+```
+
+```{r}
+acf(na.omit(jpy_xof$Returns), main = "ACF des rendements continus du JPY/XOF")
+
+```
+
+#### Hypothèse : Il y a pas d'autocorrelation. ça ressemble à un bruit blanc.
+
+```{r}
+library(tseries)
+adf_test_jpy <- adf.test(na.omit(jpy_xof$Returns), alternative = "stationary")
+print(adf_test_jpy)
+
+```
+
+```{r}
+# Vérification de la stationnarité
+if (adf_test_jpy$p.value < 0.05) {
+cat("La série est stationnaire (p-value :", adf_test_jpy$p.value, ")\n")
+} else {
+cat("La série n'est pas stationnaire (p-value :", adf_test_jpy$p.value, ")\n")
+}
+```
+
+```{r}
+library(FinTS)
+arch_test_jpy <- ArchTest(jpy_xof$Returns) 
+print(arch_test_jpy)
+```
+
+#### Constat : p-value = 1.414e-07 \< 0.05.
+
+Cela indique une hétéroscédasticité conditionnelle. On peut alors utiliser un modèle GARCH pour modéliser la volatilité de cette devise.
+
+### Modélisation de la volatilité avec un modèle GARCH
+
+#### Essai d'un modèle garch(1,1)
+
+```{r}
+library(fGarch)
+garch_model_jpy <- garchFit(formula = ~ garch(1, 1), data = na.omit(jpy_xof$Returns), 
+                            trace = FALSE,show_col_types = FALSE)
+summary(garch_model_jpy)
+
+```
+
+#### Résumé des coefficients :
+
+$\mu$(Moyenne des retours) : Proche de zéro
+
+On a p-value = 0.41195. Ce coefficient n'est pas significatif au seuil de 5 %. Cela signifie que la moyenne des retours n'a pas d'effet significatif sur le modèle.
+
+$\omega$(Constante de la variance) :
+
+On a p-value=0.00572 : Ce coefficient est significatif . Cela montre que la constante dans l'équation de variance est importante.
+
+$\alpha_{1}$ (Effet ARCH, influence des chocs passés sur la volatilité actuelle) : 0.02739
+
+On a p-value = 6.68e-09 : Ce coefficient est hautement significatif, ce qui indique que les chocs passés ont un effet important sur la volatilité actuelle.
+
+$\beta_{1}$​ (Effet GARCH, persistance de la volatilité) : 0.9669
+
+On a p-value = 2e-16 : Ce coefficient est également très significatif, ce qui montre que la volatilité présente une forte persistance.
+
+#### Persistance
+
+La somme de $\alpha_{1} + \beta_{1} = 0.9938$ est très proche de 1, indiquant que la volatilité présente une longue mémoire (processus stationnaire mais très persistant). Cela signifie que les périodes de volatilité élevée (ou faible) tendent à durer longtemps.
+
+#### Temps moyen de retour à la moyenne :
+
+Le temps moyen de retour à la moyenne est /
+
+$\tau = \frac{1}{1-(\alpha_{1}+\beta_{1})}$
+
+$\tau = \frac{1}{1-(0.9938)} \simeq 161.29$
+
+Le temps moyen de retour à la moyenne est d'environ 161 périodes(jours dans notre cas). Cela indique que la volatilité revient très lentement à sa valeur moyenne en raison de la forte persistance( $\alpha_{1}+ \beta_{1}$ proche de 1) .
+
+### Tests Résiduels Standardisés
+
+#### Test de Jarque-Bera :
+
+On a p-value \< 0.05.
+
+Alors les résidus standardisés ne suivent pas une distribution normale.
+
+#### Test de Shapiro-Wilk :
+
+On a p-value \< 0.05.
+
+Confirme la non-normalité des résidus standardisés.
+
+#### Test de Ljung-Box (Q-statistics pour les résidus et résidus au carré) :
+
+Résidus $Q(10,15,20)$: Les p-values montrent que l'hypothèse d'indépendance des résidus ne peut pas être rejetée.
+
+Résidus au carré $Q^2(10,15,20)$: Les p-values indiquent que les résidus au carré ne présentent pas de dépendance significative. Cela suggère que le modèle capture bien la dynamique de la volatilité.
+
+#### Test LM-ARCH :
+
+On a p-value = 0.9706 \> 0.05 confirme l'absence d'effet ARCH résiduel. Cela signifie que le modèle a bien modélisé la dynamique de la variance.
+
+L'absence d'autocorrélation des résidus et d'effet ARCH résiduel indique que le modèle GARCH(1,1) est approprié pour capturer la dynamique de la variance conditionnelle.
+
+```{r}
+# Prévisions de la volatilité conditionnelle
+volatility_garch_jpy <- volatility(garch_model_jpy)
+
+```
+
+```{r}
+ggplot(data = na.omit(jpy_xof), aes(x = Date, y = volatility_garch_jpy)) +
+  geom_line(color = "blue", size = 1) +
+  labs(title = "Volatilité conditionnelle de JPY/XOF estimée par le modèle GARCH(1,1)",
+       x = "Date",
+       y = "Volatilité") +
+  theme_minimal()
+
+```
+
+#### Constat :
+
+-   **Évolution temporelle** :
+
+    -   La volatilité semble présenter des fluctuations importantes au cours de la période étudiée (2014 à 2024).
+
+    -   Les pics de volatilité se produisent à des moments spécifiques (par exemple, autour de 2016, 2020, et légèrement en 2022-2023).
+
+-   **Tendances générales** :
+
+    -   La volatilité a tendance à diminuer progressivement après les pics, ce qui pourrait refléter une stabilisation relative des marchés après des périodes de stress.
+
+    -   Une volatilité plus basse est observée autour de 2019 et 2021.
+
+-   **Impact des événements macroéconomiques** :
+
+    -   Les pics de volatilité pourraient correspondre à des événements économiques ou géopolitiques importants ayant affecté le JPY ou le XOF, comme des crises financières, des variations brutales des taux de change ou des décisions de politique monétaire.
+
+-   **Cycles de volatilité** :
+
+    -   La volatilité semble suivre des cycles. Cela peut être dû à l'effet des politiques monétaires, des fluctuations des exportations/importations, ou des événements régionaux impactant ces devises.
+
+-   **Comparaison récente** :
+
+    -   Depuis 2023-2024, la volatilité semble avoir légèrement augmenté par rapport à ses niveaux minimaux, mais reste inférieure aux pics précédents.
+
+## Classement des devises par volatilité
+
+Pour le faire, on utilise la **volatilité conditionnelle moyenne** sur toute la période étudiée pour classer les devises.
+
+```{r}
+# Liste des modèles et données GARCH
+models <- list(
+  USD_XOF = garch_model_usd,
+  GBP_XOF = garch_model_gbp,
+  CAD_XOF = garch_model_cad,
+  AUD_XOF = garch_model_aud,
+  CNY_XOF = garch_model_cny,
+  HKD_XOF = garch_model_hkd,
+  JPY_XOF = garch_model_jpy
+)
+
+# Calcul des volatilités conditionnelles moyennes
+volatility_means <- sapply(models, function(model) {
+  # Calculer la volatilité conditionnelle
+  volatility <- volatility(model)
+  # Retourner la moyenne de la volatilité
+  mean(volatility, na.rm = TRUE)
+})
+
+# Le prix de EUR/XOF étant constant on pose : 
+volatility_means["EUR_XOF"] <- 0 
+
+
+# Conversion en dataframe pour un affichage structuré
+volatility_df <- data.frame(
+  Devise = names(volatility_means),
+  Volatilite_Moyenne = as.numeric(volatility_means)
+)
+
+# Trier par volatilité décroissante
+volatility_df <- volatility_df[order(-volatility_df$Volatilite_Moyenne), ]
+
+# Affichage des résultats
+print(volatility_df)
+
+# Visualisation des résultats sous forme de diagramme à barres
+library(ggplot2)
+
+ggplot(volatility_df, aes(x = reorder(Devise, -Volatilite_Moyenne),
+                          y = Volatilite_Moyenne)) +
+  geom_bar(stat = "identity", fill = "blue", color = "black") +
+  labs(
+    title = "Classement des devises par volatilité moyenne",
+    x = "Paire de devises",
+    y = "Volatilité moyenne"
+  ) +
+  theme_minimal() +
+  coord_flip() # Rotation pour une meilleure lisibilité
+
+```
+
+Analyse fondamentale: Les devises les plus et les moins volatiles
+
+1.  **USD/XOF (dollar américain)** :
+
+    -   Probablement une des plus volatiles, car le dollar est influencé par des annonces économiques majeures comme les taux d'intérêt de la Fed, les données sur l'inflation ou l'emploi.
+
+2.  **EUR/XOF (euro)** :
+
+    -   Généralement stable par rapport au XOF, car le XOF est arrimé à l'euro à un taux fixe grâce à l'Union Monétaire Ouest-Africaine (UMOA). Sa possibilité est donc limitée.
+
+3.  **GBP/XOF (livre sterling)** :
+
+    -   La livre peut être relativement volatile, surtout dans un contexte post-Brexit, où les incertitudes sur l'économie britannique influencent les mouvements de la livre.
+
+4.  **JPY/XOF (yen japonais)** :
+
+    -   Le yen est souvent considéré comme une valeur refuge et connaît des périodes de forte utilisation, notamment en temps de crise ou de fluctuations sur les marchés asiatiques.
+
+5.  **CHF/XOF (franc suisse)** :
+
+    -   Relativement stable, car le franc suisse est une autre monnaie refuge, mais il peut connaître des mouvements soudains en période de turbulences économiques.
+
+6.  **AUD/XOF (dollar australien)** :
+
+    -   Assez volatile, car fortement influencé par les prix des matières premières et les échanges commerciaux avec la Chine.
+
+7.  **CAD/XOF (dollar canadien)** :
+
+    -   Volatilité moyenne, principalement liée aux fluctuations des prix du pétrole.
+
+8.  **CNY/XOF (yuan chinois)** :
+
+    -   Relativement moins volatile, car le yuan est étroitement contrôlé par la Banque populaire de Chine. Cependant, il peut fluctuer avec les tensions commerciales.
+
+9.  **HKD/XOF (dollar de Hong Kong)** :
+
+    -   Faible utilisation en général, car le HKD est arrimé au dollar américain.
+
+### Les plus volatils :
+
+-   **USD/XOF** : Fortement influence par l'économie américaine et les décisions de la Fed.
+
+-   **GBP/XOF** : L'économie britannique est sujette à des incertitudes.
+
+-   **AUD/XOF** : Dépendance aux matières premières et à la Chine.
+
+### Les moins volatils :
+
+-   **EUR/XOF** : Fixité avec l'euro.
+
+-   **HKD/XOF** : Arrimé au dollar américain.
+
+-   **CNY/XOF** : Contrôle strict de la monnaie.
+
+Notre étude est conforme à ça.
+
+## Quelle monnaie choisir pour convertir ses XOF ?
+
+Critères de choix :
+
+1.  **Faible variantes** : Rechercher une paire de devise qui fluctue peu dans le temps.
+
+2.  **Stabilité macroéconomique** : Choisir un dispositif d'un pays avec une économie stable, une politique monétaire prévisible et des indicateurs économiques solides.
+
+3.  **Corrélation** : Si vous cherchez à diversifier ou à optimiser les rendements, il peut être utile de considérer la corrélation entre les différentes paires de devises.
+
+### Recommandations pratiques :
+
+1.  **Pour la stabilité absolue : EUR/XOF (fixe)**
+
+    -   L'euro est une valeur stable, car le XOF est arrimé à l'euro avec un taux fixe. Il n'y a donc pas de grande opportunité entre l'Euro et le XOF. C'est idéal si vous cherchez à éviter des fluctuations imprévues.
+
+2.  **Pour une variante modérée avec opportunité d'arbitrage :**
+
+    -   **CNY/XOF (yuan chinois)** : Bien que le yuan soit contrôlé par la Chine, il peut offrir des opportunités de rendement selon les fluctuations économiques mondiales et les tensions commerciales. Cela dépendra de l'évolution de la politique monétaire chinoise.
+
+3.  **Éviter les paires plus risquées :**
+
+    -   **GBP/XOF (livre sterling)** : La livre a montré une utilisation améliorée dans les années récentes, notamment à cause du Brexit et des incertitudes politiques en Grande-Bretagne. Elle est donc à éviter si vous cherchez à minimiser les risques.
+
+    -   **AUD/XOF (dollar australien)** : Bien que l'AUD puisse offrir des rendements intéressants, il est fortement influencé par les prix des matières premières et par la Chine. Cela le rend assez volatile, ce qui peut être risqué si la stabilité est ton critère principal.
+
+# Conclusion
+
+L'étude menée a permis de mettre en lumière les dynamiques de volatilité des principales paires de devises impliquant le Franc CFA. Les résultats montrent que :
+
+-   Certaines paires de devises, comme **USD/XOF** et **GBP/XOF**, présentent une volatilité importante, notamment autour d'événements économiques ou géopolitiques majeurs. Cette volatilité reflète des périodes d'incertitude et de risque accru.
+
+-   D'autres paires, comme **EUR/XOF**, restent totalement stables, soulignant le rôle des accords monétaires fixant leur taux de change.
+
+-   Les modèles GARCH(1,1) utilisés pour analyser les fluctuations ont démontré leur efficacité pour capter les dynamiques de volatilité dans la plupart des cas, bien que des ajustements puissent être envisagés pour mieux capturer certains comportements résiduels.
+
+Cette étude offre des informations utiles pour les acteurs économiques et les investisseurs utilisant le FCFA, leur permettant d'anticiper les variations des taux de change et de mieux gérer les risques associés.
+
+# Perspectives 
+
+Pour aller plus loin, plusieurs pistes de recherche et d'applications peuvent être envisagées :
+
+1.  **Approfondissement de l\'analyse** :
+
+    -   Étudier les impacts spécifiques d\'événements économiques ou politiques sur les pics de volatilité (exemple : Brexit, COVID-19).
+
+    -   Comparer les performances des modèles GARCH(1,1) avec d'autres approches, comme les modèles EGARCH ou TARCH, pour capturer d'éventuelles asymétries ou effets de levier.
+
+2.  **Élargissement du périmètre** :
+
+    -   Étendre l\'étude à d\'autres devises ou zones géographiques utilisant des monnaies similaires au FCFA.
+
+    -   Intégrer des données économiques externes (inflation, PIB, politique monétaire) pour une modélisation plus exhaustive.
+    
+
